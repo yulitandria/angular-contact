@@ -61,9 +61,11 @@ export class ContactlistComponent implements OnInit {
 
   onDeleteContact(id:string) {
     // Send Http request
-    this.contactService.deleteContact(id).subscribe(() => {
-      this.onFetchContacts();
-    });
+    if(confirm('Are you sure want to delete contact ?')){
+      this.contactService.deleteContact(id).subscribe(() => {
+        this.onFetchContacts();
+      });
+    }
   }
 
   onHandleError() {
