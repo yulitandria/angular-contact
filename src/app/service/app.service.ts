@@ -16,12 +16,12 @@ export class ContactService {
 
   constructor(private http: HttpClient) {}
 
-  createAndStorePost(name: string, phone: string, address:string) {
-    const postData: Contact = { fullName: name, phoneNumber: phone, address:address };
+  createAndStoreContact(name: string, phone: string, address:string) {
+    const contactData: Contact = { fullName: name, phoneNumber: phone, address:address };
     this.http
       .post<{ name: string }>(
-        'https://ng-complete-guide-c56d3.firebaseio.com/posts.json',
-        postData,
+        'https://cdc-web-frontend.herokuapp.com/contacts',
+        contactData,
         {
           observe: 'response'
         }
@@ -36,28 +36,27 @@ export class ContactService {
       );
   }
 
-  fetchPosts() {
-    let searchParams = new HttpParams();
-    searchParams = searchParams.append('print', 'pretty');
-    searchParams = searchParams.append('custom', 'key');
+  fetchContacts() {
+    //let searchParams = new HttpParams();
+    //searchParams = searchParams.append('print', 'pretty');
     return this.http
       .get<{ [key: string]: Contact }>(
         'https://cdc-web-frontend.herokuapp.com/contacts',
         {
-          headers: new HttpHeaders({ 'Custom-Header': 'Hello' }),
-          params: searchParams,
+          //headers: new HttpHeaders({ 'Custom-Header': 'Hello' }),
+          //params: searchParams,
           responseType: 'json'
         }
       )
       .pipe(
         map(responseData => {
-          const postsArray: Contact[] = [];
+          const contactsArray: Contact[] = [];
           for (const key in responseData) {
             if (responseData.hasOwnProperty(key)) {
-              postsArray.push({ ...responseData[key], id: key });
+              contactsArray.push({ ...responseData[key], id: key });
             }
           }
-          return postsArray;
+          return contactsArray;
         }),
         catchError(errorRes => {
           // Send to analytics server
@@ -66,7 +65,7 @@ export class ContactService {
       );
   }
 
-  deletePosts() {
+  deleteContact() {
     return this.http
       .delete('https://ng-complete-guide-c56d3.firebaseio.com/posts.json', {
         observe: 'events',

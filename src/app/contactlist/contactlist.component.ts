@@ -3,6 +3,8 @@ import { Contact } from '../model/contact.model';
 import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ContactService } from '../service/app.service';
+import { EventEmitterService } from '../service/eventemtiier.service';
+import { EditableContact } from '../model/editablecontact.model';
 
 @Component({
   selector: 'app-contactlist',
@@ -14,7 +16,7 @@ export class ContactlistComponent implements OnInit {
   error = null;
   private errorSub: Subscription;
 
-  constructor(private http: HttpClient, private contactService: ContactService) {}
+  constructor(private http: HttpClient, private contactService: ContactService, private eventEmitterService: EventEmitterService) {}
 
   ngOnInit() {
     this.errorSub = this.contactService.error.subscribe(errorMessage => {
@@ -22,7 +24,7 @@ export class ContactlistComponent implements OnInit {
     });
 
     this.isFetching = true;
-    this.contactService.fetchPosts().subscribe(
+    this.contactService.fetchContacts().subscribe(
       posts => {
         this.isFetching = false;
         this.loadedContacts = posts;
@@ -35,15 +37,15 @@ export class ContactlistComponent implements OnInit {
   }
   
 
-  onCreatePost(contactData: Contact) {
+  onCreateContact(contactData: Contact) {
     // Send Http request
-    this.contactService.createAndStorePost(contactData.fullName, contactData.phoneNumber, contactData.address);
+    this.contactService.createAndStoreContact(contactData.fullName, contactData.phoneNumber, contactData.address);
   }
 
-  onFetchPosts() {
+  onFetchContacts() {
     // Send Http request
     this.isFetching = true;
-    this.contactService.fetchPosts().subscribe(
+    this.contactService.fetchContacts().subscribe(
       contacts => {
         this.isFetching = false;
         this.loadedContacts = contacts;
@@ -56,9 +58,9 @@ export class ContactlistComponent implements OnInit {
     );
   }
 
-  onClearPosts() {
+  onClearContact() {
     // Send Http request
-    this.contactService.deletePosts().subscribe(() => {
+    this.contactService.deleteContact().subscribe(() => {
       this.loadedContacts = [];
     });
   }
@@ -69,5 +71,22 @@ export class ContactlistComponent implements OnInit {
 
   ngOnDestroy() {
     this.errorSub.unsubscribe();
+  }
+
+  onAddContactClicked(){
+    //alert('clicked')
+    //document.body.appendChild(document.createElement('app-addcontactmodal')) 
+    let newContact: EditableContact = {isGonnaEdit:false};
+    this.eventEmitterService.onShowDialogButtonClick(newContact);
+  }
+
+  onEditContactClicked(contact: Contact){
+    console.log('edit button clicked');
+    console.log(contact)
+    let newContact: EditableContact = {
+      isGonnaEdit: true,
+      contact: contact
+    };
+    this.eventEmitterService.onShowDialogButtonClick(newContact);
   }
 }

@@ -1,6 +1,3 @@
-<h2>Creating Modals with Twitter Bootstrap</h2>
-<!-- Button trigger modal -->
-<button class="btn btn-primary btn-lg" (click)="showDialog()"> Launch Modal </button>
 <ng-container #vc></ng-container>
 <ng-template #modal_1>
   <!-- Modal -->
@@ -12,7 +9,7 @@
             (click)="closeDialog()"> &times; </button>
         </div>
         <div class="modal-body">
-          <h5 class="modal-title" id="myModalLabel"> Add Contact </h5>
+          <h5 class="modal-title" id="myModalLabel"> {{isEdit? 'Edit': 'Add'}} Contact </h5>
           <!-- <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2"> -->
           <form [formGroup]="addContactForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
@@ -41,7 +38,7 @@
             <!-- <span  class="help-block alert-danger"
                                 *ngIf="!addContactForm.valid && addContactForm.touched"
                                 >Please enter valid data!</span> -->
-            <button class="btn btn-primary" type="submit">Submit</button>
+            <button class="btn btn-primary" type="submit">{{isEdit? 'Edit': 'Add'}}</button>
           </form>
           <!-- </div> -->
         </div>

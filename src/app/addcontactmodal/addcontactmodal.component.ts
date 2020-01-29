@@ -1,6 +1,10 @@
 import { Component, OnInit, ViewChild, TemplateRef, ViewContainerRef } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { EventEmitterService } from '../service/eventemtiier.service';
+import { Contact } from '../model/contact.model';
+import { EditableContact } from '../model/editablecontact.model';
+import { ContactService } from '../service/app.service';
 
 @Component({
   selector: 'app-addcontactmodal',
@@ -8,14 +12,19 @@ import { Observable } from 'rxjs';
   styleUrls: ['./addcontactmodal.component.css']
 })
 export class AddcontactmodalComponent implements OnInit {
+  addContactForm: FormGroup;
+  isEdit: boolean = false;
 
-  constructor() { }
+  constructor(    private contactService: ContactService,
+    private eventEmitterService: EventEmitterService    
+  ) { }    
+  
 
   ngOnInit() {
     this.addContactForm = new FormGroup({
       'fullName': new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]),
       'phoneNumber': new FormControl(null, [Validators.required]),
-      'address': new FormControl(null)
+      'address': new FormControl(null, [Validators.required])
     });
     // this.addContactForm.valueChanges.subscribe(
     //   (value) => console.log(value)
@@ -23,27 +32,21 @@ export class AddcontactmodalComponent implements OnInit {
     this.addContactForm.statusChanges.subscribe(
       (status) => console.log(status)
     );
-    // this.addContactForm.setValue({
-    //   'userData': {
-    //     'username': 'Max',
-    //     'email': 'max@test.com'
-    //   },
-    //   'gender': 'male',
-    //   'hobbies': []
-    // });
-    // this.addContactForm.patchValue({
-    //   'userData': {
-    //     'username': 'Anna',
-    //   }
-    // });
-    this.showDialog();
+    
+    if (this.eventEmitterService.subsVar==undefined) {    
+      this.eventEmitterService.subsVar = this.eventEmitterService.    
+      invokeShowDialogFunction.subscribe((contactEditable: EditableContact) => {    
+        this.showDialog(contactEditable.isGonnaEdit,contactEditable.contact);   
+      });    
+    } 
   }
 
   @ViewChild('modal_1', { static: true }) modal_1: TemplateRef<any>;
   @ViewChild('vc', { read: ViewContainerRef, static: true }) vc: ViewContainerRef;
   backdrop: any
   
-  showDialog() {
+  showDialog(isGonnaEdit:boolean, contact?:Contact) {
+    this.isEdit = isGonnaEdit;
     let view = this.modal_1.createEmbeddedView(null);
     this.vc.insert(view);
     this.modal_1.elementRef.nativeElement.previousElementSibling.classList.remove('fade');
@@ -52,22 +55,32 @@ export class AddcontactmodalComponent implements OnInit {
     this.backdrop = document.createElement('DIV')
     this.backdrop.className = 'modal-backdrop show';
     document.body.appendChild(this.backdrop)
+    if(isGonnaEdit){
+      this.addContactForm.patchValue({
+          'fullName': contact.fullName,
+          'phoneNumber': contact.phoneNumber,
+          'address': contact.address
+        });
+    }
   }
 
   closeDialog() {
+    this.addContactForm.reset();
     this.vc.clear()
     document.body.removeChild(this.backdrop)
   }
 
-
-
-  genders = ['male', 'female'];
-  addContactForm: FormGroup;
-  forbiddenUsernames = ['Chris', 'Anna'];
-
   onSubmit() {
     console.log(this.addContactForm);
-    this.addContactForm.reset();
+    let valueForm = this.addContactForm.value;
+    //this.addContactForm.reset();
+    if(this.isEdit){
+      //create contact
+      this.contactService.createAndStoreContact(valueForm.fullName, valueForm.phoneNumber, valueForm.address);
+    }else{
+      //edit contact
+
+    }
   }
 
   onAddHobby() {
@@ -76,9 +89,6 @@ export class AddcontactmodalComponent implements OnInit {
   }
 
   forbiddenNames(control: FormControl): {[s: string]: boolean} {
-    if (this.forbiddenUsernames.indexOf(control.value) !== -1) {
-      return {'nameIsForbidden': true};
-    }
     return null;
   }
 
