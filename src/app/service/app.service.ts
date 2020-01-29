@@ -18,6 +18,8 @@ export class ContactService {
 
   createAndStoreContact(name: string, phone: string, address:string) {
     const contactData: Contact = { fullName: name, phoneNumber: phone, address:address };
+    console.log('POST DATA')
+    console.log(contactData)
     this.http
       .post<{ name: string }>(
         'https://cdc-web-frontend.herokuapp.com/contacts',
@@ -36,15 +38,38 @@ export class ContactService {
       );
   }
 
+  putAndEditContact(name: string, phone: string, address:string, id:string) {
+    let searchParams = new HttpParams();
+    searchParams = searchParams.append('id', id);
+    const contactData: Contact = { fullName: name, phoneNumber: phone, address:address };
+    console.log('PUT DATA '+id)
+    console.log(contactData)
+    console.log(searchParams)
+    this.http
+      .put<{ name: string }>(
+        'https://cdc-web-frontend.herokuapp.com/contacts/'+id,
+        contactData,
+        {
+          observe: 'response',
+          params: searchParams
+        }
+      )
+      .subscribe(
+        responseData => {
+          console.log(responseData);
+        },
+        error => {
+          this.error.next(error.message);
+        }
+      );
+  }
+
   fetchContacts() {
-    //let searchParams = new HttpParams();
-    //searchParams = searchParams.append('print', 'pretty');
     return this.http
       .get<{ [key: string]: Contact }>(
         'https://cdc-web-frontend.herokuapp.com/contacts',
         {
           //headers: new HttpHeaders({ 'Custom-Header': 'Hello' }),
-          //params: searchParams,
           responseType: 'json'
         }
       )
@@ -53,7 +78,7 @@ export class ContactService {
           const contactsArray: Contact[] = [];
           for (const key in responseData) {
             if (responseData.hasOwnProperty(key)) {
-              contactsArray.push({ ...responseData[key], id: key });
+              contactsArray.push({ ...responseData[key]});
             }
           }
           return contactsArray;
@@ -65,11 +90,11 @@ export class ContactService {
       );
   }
 
-  deleteContact() {
+  deleteContact(id:string) {
     return this.http
-      .delete('https://ng-complete-guide-c56d3.firebaseio.com/posts.json', {
+      .delete('https://cdc-web-frontend.herokuapp.com/contacts/'+id, {
         observe: 'events',
-        responseType: 'text'
+        responseType: 'json'
       })
       .pipe(
         tap(event => {

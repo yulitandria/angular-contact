@@ -15,6 +15,7 @@
             <div class="form-group">
               <label for="fullName">Full Name</label>
               <input type="text" id="fullName" formControlName="fullName" class="form-control">
+              <input type="hidden" formControlName="id">
               <span *ngIf="!addContactForm.get('fullName').valid && addContactForm.get('fullName').touched"
                 class="help-block alert-danger float-right mb-4">This field is required!
               </span>

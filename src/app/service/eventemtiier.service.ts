@@ -9,11 +9,17 @@ import { EditableContact } from '../model/editablecontact.model';
 export class EventEmitterService {
 
     invokeShowDialogFunction = new EventEmitter();
+    invokeLoadContact = new EventEmitter;
     subsVar: Subscription;
+    loadSubsVar: Subscription;
 
     constructor() { }
 
     onShowDialogButtonClick(contactEditable?: EditableContact) {
         this.invokeShowDialogFunction.emit(contactEditable);
+    }
+
+    loadContacts(){
+        this.invokeLoadContact.emit();
     }
 } 

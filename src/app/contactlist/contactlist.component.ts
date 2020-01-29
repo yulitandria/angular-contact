@@ -34,14 +34,15 @@ export class ContactlistComponent implements OnInit {
         this.error = error.message;
       }
     );
+
+    if (this.eventEmitterService.loadSubsVar==undefined) {    
+      this.eventEmitterService.loadSubsVar = this.eventEmitterService.    
+      invokeLoadContact.subscribe(() => {    
+        this.onFetchContacts();   
+      });    
+    } 
   }
   
-
-  onCreateContact(contactData: Contact) {
-    // Send Http request
-    this.contactService.createAndStoreContact(contactData.fullName, contactData.phoneNumber, contactData.address);
-  }
-
   onFetchContacts() {
     // Send Http request
     this.isFetching = true;
@@ -58,10 +59,10 @@ export class ContactlistComponent implements OnInit {
     );
   }
 
-  onClearContact() {
+  onDeleteContact(id:string) {
     // Send Http request
-    this.contactService.deleteContact().subscribe(() => {
-      this.loadedContacts = [];
+    this.contactService.deleteContact(id).subscribe(() => {
+      this.onFetchContacts();
     });
   }
 

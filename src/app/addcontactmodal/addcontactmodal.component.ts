@@ -11,7 +11,10 @@ import { ContactService } from '../service/app.service';
   templateUrl: './addcontactmodal.component.html',
   styleUrls: ['./addcontactmodal.component.css']
 })
-export class AddcontactmodalComponent implements OnInit {
+export class AddcontactmodalComponent implements OnInit {  
+  @ViewChild('modal_1', { static: true }) modal_1: TemplateRef<any>;
+  @ViewChild('vc', { read: ViewContainerRef, static: true }) vc: ViewContainerRef;
+  backdrop: any
   addContactForm: FormGroup;
   isEdit: boolean = false;
 
@@ -24,7 +27,8 @@ export class AddcontactmodalComponent implements OnInit {
     this.addContactForm = new FormGroup({
       'fullName': new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]),
       'phoneNumber': new FormControl(null, [Validators.required]),
-      'address': new FormControl(null, [Validators.required])
+      'address': new FormControl(null, [Validators.required]),
+      'id': new FormControl(null)
     });
     // this.addContactForm.valueChanges.subscribe(
     //   (value) => console.log(value)
@@ -40,10 +44,6 @@ export class AddcontactmodalComponent implements OnInit {
       });    
     } 
   }
-
-  @ViewChild('modal_1', { static: true }) modal_1: TemplateRef<any>;
-  @ViewChild('vc', { read: ViewContainerRef, static: true }) vc: ViewContainerRef;
-  backdrop: any
   
   showDialog(isGonnaEdit:boolean, contact?:Contact) {
     this.isEdit = isGonnaEdit;
@@ -59,7 +59,8 @@ export class AddcontactmodalComponent implements OnInit {
       this.addContactForm.patchValue({
           'fullName': contact.fullName,
           'phoneNumber': contact.phoneNumber,
-          'address': contact.address
+          'address': contact.address,
+          'id': contact.id
         });
     }
   }
@@ -68,6 +69,7 @@ export class AddcontactmodalComponent implements OnInit {
     this.addContactForm.reset();
     this.vc.clear()
     document.body.removeChild(this.backdrop)
+    this.eventEmitterService.loadContacts()
   }
 
   onSubmit() {
@@ -75,12 +77,13 @@ export class AddcontactmodalComponent implements OnInit {
     let valueForm = this.addContactForm.value;
     //this.addContactForm.reset();
     if(this.isEdit){
+      //edit contact
+      this.contactService.putAndEditContact(valueForm.fullName, valueForm.phoneNumber, valueForm.address, valueForm.id);
+    }else{
       //create contact
       this.contactService.createAndStoreContact(valueForm.fullName, valueForm.phoneNumber, valueForm.address);
-    }else{
-      //edit contact
-
     }
+    this.closeDialog();
   }
 
   onAddHobby() {
