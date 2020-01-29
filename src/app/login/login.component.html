@@ -1,0 +1,36 @@
+
+    <div class="demo-headline" style="padding: 0px;">
+        <h2 class="demo-logo text-center">
+            Contact Book
+        </h2>
+    </div>
+<div class="row">
+	<div class="col-md-4"></div>
+
+	<div class="col-md-4 services-inner-box" id="screenView">
+		<form class="form-horizontal" method="POST"
+			action="${pageContext.request.contextPath}/login">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<span class="demo-section-title text-center mb-3">Log into
+						your account</span> <input type="text" name="accountNumber"
+						class="form-control mb-2" maxlength="6"
+						placeholder="Please input your account number" required /> <input
+						type="password" name="pin" class="form-control mb-2" maxlength="6"
+						placeholder="Please input your PIN" required />
+					<div id="confirmPin">
+						<!-- <a href="#"
+                           class="btn btn-block btn-lg btn-success text-uppercase">Confirm</a> -->
+						<button type="submit"
+							class="btn btn-block btn-primary text-uppercase">Confirm</button>
+					</div>
+					<span style="color: red;">message</span> <span
+						style="color: green;">notif</span>
+					<!-- // Pin Pad -->
+				</div>
+				<!-- /.col-xs-4 -->
+			</div>
+			<!-- // END login screen  -->
+		</form>
+	</div>
+</div>
