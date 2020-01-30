@@ -7,7 +7,7 @@ import { AddcontactmodalComponent } from './addcontactmodal/addcontactmodal.comp
 
 const routes: Routes = [
   {path:'login', component: LoginComponent},
-  {path:'list', component: ContactlistComponent},
+  {path:'list', component: ContactlistComponent},{path:'', component: ContactlistComponent},
   {path:'test', component: AddcontactmodalComponent}
 ];
 
