@@ -17,25 +17,25 @@
                 </div>
                 <h4 *ngIf="isFetching">Loading....</h4>
                 <h4 *ngIf="loadedContacts.length < 1 && !isFetching">No contact available!</h4>
-                <table class="table table-hover table-borderedd" *ngIf="loadedContacts.length >= 1 && !isFetching">
+                <table class="table table-hover table-borderedd" *ngIf="loadedContacts.length >= 1 && !isFetching" [mfData]="loadedContacts" #mf="mfDataTable">
                     <thead class="thead-light">
-                        <tr>
-                            <th class="thead col-1">#</th>
-                            <th class="thead col-md-2" scope="col" sortable="name" (sort)="onSort($event)">Name</th>
-                            <th class="thead col-md-2" scope="col" sortable="phone" (sort)="onSort($event)">Phone Number</th>
-                            <th class="thead col-md-4" scope="col" sortable="address" (sort)="onSort($event)">Address</th>
-                            <th class="thead col-1"></th>
-                            <th class="thead col-1"></th>
-                        </tr>
+                        <!-- <tr> -->
+                            <th class="thead col-1" ><mfDefaultSorter by="id">#</mfDefaultSorter></th>
+                            <th class="thead col-md-2" scope="col" sortable="name" (sort)="onSort($event)"><mfDefaultSorter by="fullName">Name</mfDefaultSorter></th>
+                            <th class="thead col-md-2" scope="col" sortable="phone" (sort)="onSort($event)"><mfDefaultSorter by="phoneNumber">Phone Number</mfDefaultSorter></th>
+                            <th class="thead col-md-4" scope="col" sortable="address" (sort)="onSort($event)"><mfDefaultSorter by="address">Address</mfDefaultSorter></th>
+                            <th class="thead col-1" scope="col" ><mfDefaultSorter by="id"></mfDefaultSorter></th>
+                            <th class="thead col-1" scope="col" ><mfDefaultSorter by="id"></mfDefaultSorter></th>
+                        <!-- </tr> -->
                     </thead>
                     <tbody>
-                        <tr *ngFor="let contact of loadedContacts">
-                            <th class="thead col-1">{{contact.id}}</th>
-                            <td class="td">{{contact.fullName}}</td>
-                            <td class="td">{{contact.phoneNumber}}</td>
-                            <td class="td">{{contact.address}}</td>
-                            <td class="td"><button class="btn-sm btn-primary" (click)="onEditContactClicked(contact)">Edit</button></td>
-                            <td class="td"><button class="btn-sm btn-danger" (click)="onDeleteContact(contact.id)">Delete</button></td>
+                        <tr *ngFor="let contact of mf.data">
+                            <th class="thead col-1" scope="row">{{contact.id}}</th>
+                            <td class="td" scope="row">{{contact.fullName}}</td>
+                            <td class="td" scope="row">{{contact.phoneNumber}}</td>
+                            <td class="td" scope="row">{{contact.address}}</td>
+                            <td class="td" scope="row"><button class="btn-sm btn-primary" (click)="onEditContactClicked(contact)">Edit</button></td>
+                            <td class="td" scope="row"><button class="btn-sm btn-danger" (click)="onDeleteContact(contact.id)">Delete</button></td>
                         </tr>
                     </tbody>
                 </table>

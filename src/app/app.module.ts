@@ -7,6 +7,7 @@ import { LoginComponent } from './login/login.component';
 import { ContactlistComponent } from './contactlist/contactlist.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AddcontactmodalComponent } from './addcontactmodal/addcontactmodal.component';
+import {DataTableModule} from "angular-6-datatable";
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { AddcontactmodalComponent } from './addcontactmodal/addcontactmodal.comp
   imports: [
     BrowserModule,
     AppRoutingModule,
+    DataTableModule,
     FormsModule,ReactiveFormsModule, HttpClientModule
   ],
   providers: [],

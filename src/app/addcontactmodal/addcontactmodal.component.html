@@ -14,10 +14,13 @@
           <form [formGroup]="addContactForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
               <label for="fullName">Full Name</label>
-              <input type="text" id="fullName" formControlName="fullName" class="form-control">
+              <input type="text" id="fullName" formControlName="fullName" class="form-control"> 
               <input type="hidden" formControlName="id">
               <span *ngIf="!addContactForm.get('fullName').valid && addContactForm.get('fullName').touched"
-                class="help-block alert-danger float-right mb-4">This field is required!
+                class="help-block alert-danger float-right">
+              <span *ngIf="addContactForm.get('fullName').errors['required']">This field is required! </span>
+              <span *ngIf="addContactForm.get('fullName').errors['maxlength']">The value inputed exceed maxlength!</span>
+              <span *ngIf="addContactForm.get('fullName').errors['invalidFormat']">The value inputed is invalid!</span>
               </span>
             </div>
             <div class="form-group">
@@ -26,6 +29,8 @@
               <span *ngIf="!addContactForm.get('phoneNumber').valid && addContactForm.get('phoneNumber').touched"
                 class="help-block alert-danger float-right">
                 <span *ngIf="addContactForm.get('phoneNumber').errors['required']">This field is required!</span>
+                <span *ngIf="addContactForm.get('phoneNumber').errors['maxlength']">The value inputed exceed maxlength!</span>
+                <span *ngIf="addContactForm.get('phoneNumber').errors['invalidFormat']">The value inputed is invalid!</span>
               </span>
             </div>
             <div class="form-group">
@@ -34,6 +39,7 @@
               <span *ngIf="!addContactForm.get('address').valid && addContactForm.get('address').touched"
                 class="help-block alert-danger float-right">
                 <span *ngIf="addContactForm.get('address').errors['required']">This field is required!</span>
+                <span *ngIf="addContactForm.get('address').errors['maxlength']">The value inputed exceed maxlength!</span>
               </span>
             </div>
             <!-- <span  class="help-block alert-danger"

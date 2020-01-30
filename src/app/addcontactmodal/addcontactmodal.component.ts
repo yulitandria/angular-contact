@@ -25,9 +25,9 @@ export class AddcontactmodalComponent implements OnInit {
 
   ngOnInit() {
     this.addContactForm = new FormGroup({
-      'fullName': new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]),
-      'phoneNumber': new FormControl(null, [Validators.required]),
-      'address': new FormControl(null, [Validators.required]),
+      'fullName': new FormControl(null, [Validators.required, Validators.maxLength(35), this.validateName.bind(this)]),
+      'phoneNumber': new FormControl(null, [Validators.required, Validators.maxLength(13), this.validatePhoneNumber.bind(this)]),
+      'address': new FormControl(null, [Validators.required, Validators.maxLength(100)]),
       'id': new FormControl(null)
     });
     // this.addContactForm.valueChanges.subscribe(
@@ -91,7 +91,23 @@ export class AddcontactmodalComponent implements OnInit {
     (<FormArray>this.addContactForm.get('hobbies')).push(control);
   }
 
-  forbiddenNames(control: FormControl): {[s: string]: boolean} {
+  validateName(control: FormControl): {[s: string]: boolean} {
+    if(control.value!=null){
+      let validation = control.value.match(/[A-Za-z]/);
+      if(validation==null || validation.length<1){
+        return {'invalidFormat': true};
+      }
+    }
+    return null;
+  }
+
+  validatePhoneNumber(control: FormControl): {[s: string]: boolean} {
+    if(control.value!=null){
+      let validation = control.value.match(/[+0-9]/);
+      if(validation==null || validation.length<1){
+        return {'invalidFormat': true};
+      }
+    }
     return null;
   }
 
