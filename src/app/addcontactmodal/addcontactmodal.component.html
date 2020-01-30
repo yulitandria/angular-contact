@@ -16,17 +16,18 @@
               <label for="fullName">Full Name</label>
               <input type="text" id="fullName" formControlName="fullName" class="form-control"> 
               <input type="hidden" formControlName="id">
-              <span *ngIf="!addContactForm.get('fullName').valid && addContactForm.get('fullName').touched"
+              <span *ngIf="!addContactForm.get('fullName').valid && (addContactForm.get('fullName').dirty || addContactForm.get('fullName').touched)"
                 class="help-block alert-danger float-right">
               <span *ngIf="addContactForm.get('fullName').errors['required']">This field is required! </span>
               <span *ngIf="addContactForm.get('fullName').errors['maxlength']">The value inputed exceed maxlength!</span>
+              <span *ngIf="addContactForm.get('fullName').errors['minlength']">The value inputed should be at least 3 character!</span>
               <span *ngIf="addContactForm.get('fullName').errors['invalidFormat']">The value inputed is invalid!</span>
               </span>
             </div>
             <div class="form-group">
               <label for="phoneNumber">Phone Number</label>
               <input type="text" id="phoneNumber" formControlName="phoneNumber" class="form-control">
-              <span *ngIf="!addContactForm.get('phoneNumber').valid && addContactForm.get('phoneNumber').touched"
+              <span *ngIf="!addContactForm.get('phoneNumber').valid && (addContactForm.get('phoneNumber').dirty || addContactForm.get('phoneNumber').touched)"
                 class="help-block alert-danger float-right">
                 <span *ngIf="addContactForm.get('phoneNumber').errors['required']">This field is required!</span>
                 <span *ngIf="addContactForm.get('phoneNumber').errors['maxlength']">The value inputed exceed maxlength!</span>
@@ -36,7 +37,7 @@
             <div class="form-group">
               <label for="address">Address</label>
               <textarea type="text" id="address" formControlName="address" class="form-control"></textarea>
-              <span *ngIf="!addContactForm.get('address').valid && addContactForm.get('address').touched"
+              <span *ngIf="!addContactForm.get('address').valid && (addContactForm.get('address').dirty || addContactForm.get('address').touched)"
                 class="help-block alert-danger float-right">
                 <span *ngIf="addContactForm.get('address').errors['required']">This field is required!</span>
                 <span *ngIf="addContactForm.get('address').errors['maxlength']">The value inputed exceed maxlength!</span>

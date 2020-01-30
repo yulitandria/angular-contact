@@ -25,8 +25,8 @@ export class AddcontactmodalComponent implements OnInit {
 
   ngOnInit() {
     this.addContactForm = new FormGroup({
-      'fullName': new FormControl(null, [Validators.required, Validators.maxLength(35), this.validateName.bind(this)]),
-      'phoneNumber': new FormControl(null, [Validators.required, Validators.maxLength(13), this.validatePhoneNumber.bind(this)]),
+      'fullName': new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(35), this.validateName.bind(this)]),
+      'phoneNumber': new FormControl(null, [Validators.required, Validators.minLength(10), Validators.maxLength(13), this.validatePhoneNumber.bind(this)]),
       'address': new FormControl(null, [Validators.required, Validators.maxLength(100)]),
       'id': new FormControl(null)
     });
@@ -69,7 +69,7 @@ export class AddcontactmodalComponent implements OnInit {
     this.addContactForm.reset();
     this.vc.clear()
     document.body.removeChild(this.backdrop)
-    this.eventEmitterService.loadContacts()
+    //this.eventEmitterService.loadContacts()
   }
 
   onSubmit() {
@@ -93,8 +93,8 @@ export class AddcontactmodalComponent implements OnInit {
 
   validateName(control: FormControl): {[s: string]: boolean} {
     if(control.value!=null){
-      let validation = control.value.match(/[A-Za-z]/);
-      if(validation==null || validation.length<1){
+      let validation = control.value.match(/[^A-Z a-z.,]/);
+      if(validation!=null && validation.length>0){
         return {'invalidFormat': true};
       }
     }
@@ -103,12 +103,13 @@ export class AddcontactmodalComponent implements OnInit {
 
   validatePhoneNumber(control: FormControl): {[s: string]: boolean} {
     if(control.value!=null){
-      let validation = control.value.match(/[+0-9]/);
-      if(validation==null || validation.length<1){
+      let validation = control.value.match(/[^+0-9]/);
+      if(validation!=null && validation.length>0){
         return {'invalidFormat': true};
       }
     }
     return null;
   }
+
 
 }

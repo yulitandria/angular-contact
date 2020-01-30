@@ -8,13 +8,14 @@ import {
 import { map, catchError, tap } from 'rxjs/operators';
 import { Subject, throwError } from 'rxjs';
 import { Contact } from '../model/contact.model';
+import { EventEmitterService } from './eventemtiier.service';
 
 
 @Injectable({ providedIn: 'root' })
 export class ContactService {
   error = new Subject<string>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private eventEmitterService: EventEmitterService) {}
 
   createAndStoreContact(name: string, phone: string, address:string) {
     const contactData: Contact = { fullName: name, phoneNumber: phone, address:address };
@@ -30,6 +31,7 @@ export class ContactService {
       )
       .subscribe(
         responseData => {
+          this.eventEmitterService.loadContacts()
           console.log(responseData);
         },
         error => {
@@ -56,6 +58,7 @@ export class ContactService {
       )
       .subscribe(
         responseData => {
+          this.eventEmitterService.loadContacts()
           console.log(responseData);
         },
         error => {
