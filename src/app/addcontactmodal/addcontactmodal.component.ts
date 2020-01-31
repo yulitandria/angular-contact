@@ -104,6 +104,7 @@ export class AddcontactmodalComponent implements OnInit {
   validatePhoneNumber(control: FormControl): {[s: string]: boolean} {
     if(control.value!=null){
       let validation = control.value.match(/[^+0-9]/);
+      //console.log("VALIDATION : "+validation)
       if(validation!=null && validation.length>0){
         return {'invalidFormat': true};
       }

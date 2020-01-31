@@ -8,12 +8,16 @@
     <div class="col-md-8 col-sm-8">
         <div class="pricingTable">
             <div class="pricingTable-header">
-                <h3 class="title">Contact List</h3>
+                <div class="price-value">
+                    <div class="value">
+                        <h3 class="title month">Contact List</h3>
+                </div>
+                </div>
             </div>
 
             <div class="pricing-content table-responsive">
                 <div class="pull-left">
-                    <button class="btn btn-primary" (click)="onAddContactClicked()">Add Contact</button>
+                    <button class="btn btn-primary addButtonContact" (click)="onAddContactClicked()">&bull; Add Contact</button>
                 </div>
                 <h4 *ngIf="isFetching">Loading....</h4>
                 <h4 *ngIf="loadedContacts.length < 1 && !isFetching">No contact available!</h4>
