@@ -73,17 +73,21 @@ export class AddcontactmodalComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.addContactForm);
+    console.log(this.addContactForm.status);
     let valueForm = this.addContactForm.value;
     //this.addContactForm.reset();
-    if(this.isEdit){
-      //edit contact
-      this.contactService.putAndEditContact(valueForm.fullName, valueForm.phoneNumber, valueForm.address, valueForm.id);
+    if('VALID'===this.addContactForm.status){
+        if(this.isEdit){
+          //edit contact
+          this.contactService.putAndEditContact(valueForm.fullName, valueForm.phoneNumber, valueForm.address, valueForm.id);
+        }else{
+          //create contact
+          this.contactService.createAndStoreContact(valueForm.fullName, valueForm.phoneNumber, valueForm.address);
+        }
+        this.closeDialog();
     }else{
-      //create contact
-      this.contactService.createAndStoreContact(valueForm.fullName, valueForm.phoneNumber, valueForm.address);
+      alert('Please Input valid data')
     }
-    this.closeDialog();
   }
 
   onAddHobby() {

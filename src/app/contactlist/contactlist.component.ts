@@ -77,6 +77,7 @@ export class ContactlistComponent implements OnInit {
   }
 
   onAddContactClicked(){
+    console.log('add clicked')
     //alert('clicked')
     //document.body.appendChild(document.createElement('app-addcontactmodal')) 
     let newContact: EditableContact = {isGonnaEdit:false};

@@ -20,8 +20,8 @@
                 class="help-block alert-danger float-right">
               <span *ngIf="addContactForm.get('fullName').errors['required']">This field is required! </span>
               <span *ngIf="addContactForm.get('fullName').errors['maxlength']">The value inputed exceed maxlength!</span>
-              <span *ngIf="addContactForm.get('fullName').errors['minlength']">The value inputed should be at least 3 character!</span>
-              <span *ngIf="addContactForm.get('fullName').errors['invalidFormat'] && !addContactForm.get('fullName').errors['minlength']">The value inputed is invalid!</span>
+              <span *ngIf="addContactForm.get('fullName').errors['minlength'] && !addContactForm.get('fullName').errors['invalidFormat']">The value inputed should be at least 3 character!</span>
+              <span *ngIf="addContactForm.get('fullName').errors['invalidFormat']">The value inputed is invalid!</span>
               </span>
             </div>
             <div class="form-group">
@@ -31,6 +31,7 @@
                 class="help-block alert-danger float-right">
                 <span *ngIf="addContactForm.get('phoneNumber').errors['required']">This field is required!</span>
                 <span *ngIf="addContactForm.get('phoneNumber').errors['maxlength']">The value inputed exceed maxlength!</span>
+                <span *ngIf="addContactForm.get('phoneNumber').errors['minlength'] && !addContactForm.get('phoneNumber').errors['invalidFormat']">The value inputed should be at least 10 character!</span>
                 <span *ngIf="addContactForm.get('phoneNumber').errors['invalidFormat']">The value inputed is invalid!</span>
               </span>
             </div>

@@ -16,8 +16,8 @@
             </div>
 
             <div class="pricing-content table-responsive">
-                <div class="pull-left">
-                    <button class="btn btn-primary addButtonContact" (click)="onAddContactClicked()">&bull; Add Contact</button>
+                <div>
+                    <button class="btn btn-primary addButtonContact" (click)="onAddContactClicked()"> Add Contact</button>
                 </div>
                 <h4 *ngIf="isFetching">Loading....</h4>
                 <h4 *ngIf="loadedContacts.length < 1 && !isFetching">No contact available!</h4>
